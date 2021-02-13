@@ -14,6 +14,7 @@ let sliders = [];
 // to create your own api key
 const KEY = '20264217-c9e8330d06e9d2711ded279bc';
 const getImages = (query) => {
+  handleSpinner();
   fetch(`https://pixabay.com/api/?key=${ KEY }&q=${ query }&image_type=photo&pretty=true`)
     .then(response => response.json())
     .then(data => showImages(data.hits))
@@ -24,6 +25,7 @@ const getImages = (query) => {
 
 // show images 
 const showImages = (images) => {
+  handleSpinner();
   imagesArea.style.display = 'block';
   gallery.innerHTML = '';
   // show gallery title
@@ -33,8 +35,7 @@ const showImages = (images) => {
     div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
     div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${ image.webformatURL }") src="${ image.webformatURL }" alt="${ image.tags }">`;
     gallery.appendChild(div)
-  })
-
+  });
 }
 
 let slideIndex = 0;
@@ -57,21 +58,24 @@ const createSlider = () => {
     alert('Select at least 2 image.')
     return;
   }
-  // crate slider previous next area
-  sliderContainer.innerHTML = '';
-  const prevNext = document.createElement('div');
-  prevNext.className = "prev-next d-flex w-100 justify-content-between align-items-center";
-  prevNext.innerHTML = ` 
+
+  const duration = document.getElementById('doration').value;
+  if (duration >= 1000) {
+    // crate slider previous next area
+    sliderContainer.innerHTML = '';
+    const prevNext = document.createElement('div');
+    prevNext.className = "prev-next d-flex w-100 justify-content-between align-items-center";
+    prevNext.innerHTML = ` 
   <span class="prev" onclick="changeItem(-1)"><i class="fas fa-chevron-left"></i></span>
   <span class="next" onclick="changeItem(1)"><i class="fas fa-chevron-right"></i></span>
   `;
 
-  sliderContainer.appendChild(prevNext)
-  document.querySelector('.main').style.display = 'block';
-  // hide image aria
-  imagesArea.style.display = 'none';
-  const duration = document.getElementById('doration').value;
-  if (duration > 1000) {
+    sliderContainer.appendChild(prevNext)
+    document.querySelector('.main').style.display = 'block';
+
+    // hide image aria
+    imagesArea.style.display = 'none';
+
     sliders.forEach(slide => {
       let item = document.createElement('div')
       item.className = "slider-item";
@@ -133,3 +137,9 @@ document.getElementById("search").addEventListener("keyup", function (event) {
     document.getElementById("search-btn").click();
   }
 });
+
+// spinner
+const handleSpinner = () => {
+  const spinner = document.getElementById('spinner');
+  spinner.classList.toggle("d-none");
+}

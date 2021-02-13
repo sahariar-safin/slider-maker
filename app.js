@@ -19,7 +19,8 @@ const getImages = (query) => {
     .then(response => response.json())
     .then(data => showImages(data.hits))
     .catch(err => {
-      errorMassage.innerHTML = `<h3>Something wrong!!!</h3>`
+      errorMassage.innerHTML = `<h3>Something wrong! Try again!</h3>`;
+      handleSpinner();
     })
 }
 

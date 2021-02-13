@@ -15,6 +15,7 @@ let sliders = [];
 const KEY = '20264217-c9e8330d06e9d2711ded279bc';
 const getImages = (query) => {
   handleSpinner();
+  gallery.innerHTML = ' ';
   fetch(`https://pixabay.com/api/?key=${ KEY }&q=${ query }&image_type=photo&pretty=true`)
     .then(response => response.json())
     .then(data => showImages(data.hits))
